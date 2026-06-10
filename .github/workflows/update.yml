@@ -1,0 +1,40 @@
+name: Update YouTube stats
+
+on:
+  schedule:
+    # 毎日 21:00 UTC（＝日本時間 翌朝6:00ごろ）に実行
+    # 時刻を変えたいときは下の数字を調整（分 時 日 月 曜日 / 時はUTC）
+    - cron: "0 21 * * *"
+  workflow_dispatch: {}   # GitHubの画面から手動でも実行できるボタン
+
+permissions:
+  contents: write          # 取得したデータをリポジトリに書き込むため
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: コードを取得
+        uses: actions/checkout@v4
+
+      - name: Node.js を準備
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 統計と再生時間を取得
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          SUBS_GOAL: "1000"
+          HOURS_GOAL: "4000"
+        run: node fetch-stats.js
+
+      - name: 変更があればコミット
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "Update stats ($(date -u +%Y-%m-%d))"
+          git push

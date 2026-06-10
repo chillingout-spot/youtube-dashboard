@@ -1,0 +1,11 @@
+{
+  "name": "youtube-monetization-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "YouTube収益化ダッシュボード（自動記録・チーム共有）",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "fetch": "node fetch-stats.js",
+    "token": "node get-refresh-token.js"
+  }
+}

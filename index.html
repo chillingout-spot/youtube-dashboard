@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Live Dashboard</title>
+<style>
+  :root{
+    --bg-base:#05080F;
+    --cyan:#22D3EE; --teal:#2DD4BF; --blue:#3B82F6; --green:#34D399;
+    --yt-red:#FF0033; --text:#F2F6FA; --text-dim:#8A97A8;
+    --glass-bg:rgba(255,255,255,0.055); --glass-border:rgba(255,255,255,0.11);
+    --glass-blur:24px; --radius:26px;
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",
+           "Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:var(--font);color:var(--text);background:var(--bg-base);
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;letter-spacing:.01em}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(60% 55% at 18% 14%, rgba(34,211,238,.18), transparent 60%),
+      radial-gradient(55% 50% at 85% 22%, rgba(59,130,246,.16), transparent 62%),
+      radial-gradient(60% 60% at 80% 88%, rgba(45,212,191,.16), transparent 60%),
+      radial-gradient(55% 55% at 12% 90%, rgba(52,211,153,.13), transparent 62%);
+    filter:saturate(120%)}
+  .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+  #dash{position:relative;z-index:1;min-height:100%;padding:34px 40px 44px}
+  .topbar{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .avatar{width:74px;height:74px;border-radius:50%;object-fit:cover;flex:none;
+    border:2px solid var(--glass-border);background:rgba(255,255,255,.05)}
+  .ch-name{font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+  .ch-handle{color:var(--text-dim);font-size:15px;margin-top:5px}
+  .live{margin-left:auto;display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:flex-end}
+  .live-dot{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--text-dim);font-weight:600;letter-spacing:.04em}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--teal);
+    box-shadow:0 0 0 0 rgba(45,212,191,.6);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(45,212,191,.55)}70%{box-shadow:0 0 0 11px rgba(45,212,191,0)}100%{box-shadow:0 0 0 0 rgba(45,212,191,0)}}
+  .updated{font-size:13px;color:var(--text-dim)}
+
+  .card{background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur)) saturate(155%);
+    -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(155%);
+    border:1px solid var(--glass-border);border-radius:var(--radius);box-shadow:0 22px 60px rgba(0,0,0,.32)}
+
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px}
+  .kpi{padding:26px 30px;position:relative;overflow:hidden}
+  .kpi .label{font-size:14px;color:var(--text-dim);font-weight:600;letter-spacing:.02em}
+  .kpi .value{font-size:clamp(34px,4.2vw,52px);font-weight:700;letter-spacing:-.03em;margin-top:12px;line-height:1}
+  .kpi .raw{font-size:13px;color:var(--text-dim);margin-top:9px}
+  .kpi .delta{font-size:13px;font-weight:700;margin-top:9px}
+  .kpi .accent{position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;filter:blur(8px);opacity:.5}
+  .kpi.subs .accent{background:radial-gradient(circle,var(--cyan),transparent 70%)}
+  .kpi.views .accent{background:radial-gradient(circle,var(--blue),transparent 70%)}
+  .kpi.videos .accent{background:radial-gradient(circle,var(--green),transparent 70%)}
+  .delta.up{color:var(--teal)} .delta.down{color:var(--yt-red)} .delta.flat{color:var(--text-dim)}
+  .delta .lbl{opacity:.6;font-weight:600}
+
+  .monet{padding:26px 34px;margin-top:22px}
+  .monet-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+  .monet-head .bar{width:4px;height:22px;border-radius:3px;background:linear-gradient(var(--cyan),var(--teal))}
+  .monet-head h2{font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .monet-head .monet-sub{font-size:13px;color:var(--text-dim)}
+  .monet-head .monet-done{margin-left:auto;font-size:15px;font-weight:700;color:var(--teal)}
+  .monet-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+  @media(max-width:760px){.monet-grid{grid-template-columns:1fr;gap:26px}}
+  .gauge{display:flex;align-items:center;gap:24px}
+  .gauge-info .glabel{font-size:14px;color:var(--text-dim);font-weight:600}
+  .gauge-info .gv{font-size:27px;font-weight:700;letter-spacing:-.02em;margin-top:7px}
+  .gauge-info .gv span{font-size:15px;color:var(--text-dim);font-weight:600}
+  .gauge-info .gr{font-size:14px;color:var(--text-dim);margin-top:11px}
+  .gauge-info .gr b{color:var(--text);font-weight:700}
+
+  .chart-card{padding:24px 28px;margin-top:22px}
+  .chart-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .chart-head .bar{width:4px;height:20px;border-radius:3px;background:linear-gradient(var(--cyan),var(--teal))}
+  .chart-head h2{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .chart-head .days{font-size:13px;color:var(--text-dim)}
+  .chart-head .cdelta{font-size:14px;font-weight:700}
+  .toggle{margin-left:auto;display:flex;gap:6px;background:rgba(255,255,255,.05);
+    border:1px solid var(--glass-border);border-radius:12px;padding:4px}
+  .toggle button{font-family:var(--font);font-size:13px;font-weight:600;color:var(--text-dim);
+    background:none;border:none;padding:7px 14px;border-radius:9px;cursor:pointer;transition:.2s}
+  .toggle button.on{background:linear-gradient(135deg,var(--cyan),var(--teal));color:#04121A}
+  .chart-svg{width:100%;height:auto;display:block;margin-top:6px}
+  .chart-empty{padding:46px 0;text-align:center;color:var(--text-dim);font-size:14px;line-height:1.7}
+
+  .recent-agg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:24px 34px;margin-top:22px}
+  .agg-row{display:flex;flex-direction:column;gap:8px}
+  .agg-row .k{font-size:13px;color:var(--text-dim);font-weight:600}
+  .agg-row .v{font-size:27px;font-weight:700;letter-spacing:-.02em}
+  .agg-row .v.red{color:var(--yt-red)}
+  @media(max-width:760px){.recent-agg{grid-template-columns:1fr;gap:16px}}
+
+  .section-h{display:flex;align-items:center;gap:10px;margin:34px 2px 16px}
+  .section-h .bar{width:4px;height:20px;border-radius:3px;background:var(--yt-red)}
+  .section-h h2{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+  .vid{padding:14px;display:flex;flex-direction:column}
+  .vid .thumb{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.05)}
+  .vid .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .vid .title{font-size:14.5px;font-weight:600;line-height:1.4;margin-top:13px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .vid .date{font-size:12px;color:var(--text-dim);margin-top:7px}
+  .vid .stats{display:flex;gap:16px;margin-top:13px;padding-top:13px;border-top:1px solid var(--glass-border)}
+  .vid .stat{display:flex;flex-direction:column;gap:3px}
+  .vid .stat .n{font-size:16px;font-weight:700} .vid .stat .n.red{color:var(--yt-red)}
+  .vid .stat .t{font-size:11px;color:var(--text-dim)}
+  .loading{text-align:center;color:var(--text-dim);padding:90px 0;font-size:15px;line-height:1.8}
+  @media(max-width:760px){#dash{padding:22px 18px 36px}.kpis{grid-template-columns:1fr;gap:16px}}
+  @media(prefers-reduced-motion:reduce){.dot{animation:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="dash">
+  <div class="topbar">
+    <img class="avatar" id="avatar" alt="">
+    <div class="ch-meta"><div class="ch-name" id="chName">—</div><div class="ch-handle" id="chHandle"></div></div>
+    <div class="live"><div class="live-dot"><span class="dot"></span> LIVE</div><div class="updated" id="updated"></div></div>
+  </div>
+  <div id="content"><div class="loading">データを読み込んでいます…</div></div>
+</div>
+
+<script>
+"use strict";
+// このダッシュボードは、GitHub Actions が毎日生成する data/latest.json と
+// data/history.json を読むだけ。APIキーは一切持たないので公開しても安全です。
+const REFRESH_MS = 5 * 60 * 1000;   // 5分ごとに最新ファイルを読み直す
+let chartMetric = "subs";
+let lastData = null;
+
+async function loadJSON(url){
+  const res = await fetch(url + "?t=" + Date.now());   // キャッシュ回避
+  if (!res.ok) throw new Error(url + " が見つかりません");
+  return res.json();
+}
+async function load(){
+  let latest, history;
+  try { latest = await loadJSON("data/latest.json"); }
+  catch(e){
+    document.getElementById("content").innerHTML =
+      `<div class="loading">まだデータがありません。<br>
+       GitHub の「Actions」タブから <b>Update YouTube stats</b> を一度手動実行すると表示されます。</div>`;
+    return;
+  }
+  try { history = await loadJSON("data/history.json"); } catch { history = []; }
+  lastData = { latest, history };
+  render(latest, history);
+}
+
+function render(latest, history){
+  document.getElementById("avatar").src = latest.channel.thumb || "";
+  document.getElementById("chName").textContent = latest.channel.title || "—";
+  document.getElementById("chHandle").textContent = latest.channel.handle || "";
+  const t = new Date(latest.updatedAt);
+  document.getElementById("updated").textContent =
+    "最終更新 " + t.toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"});
+
+  const subs=latest.subs, views=latest.views, vcount=latest.videos, hours=latest.hours;
+  const subsGoal=latest.subsGoal||1000, hoursGoal=latest.hoursGoal||4000;
+
+  let rViews=0,rLikes=0,rComments=0;
+  (latest.recentVideos||[]).forEach(v=>{ rViews+=v.views||0; rLikes+=v.likes||0; rComments+=v.comments||0; });
+
+  document.getElementById("content").innerHTML = `
+    <div class="kpis">
+      <div class="card kpi subs"><div class="accent"></div>
+        <div class="label">チャンネル登録者数</div><div class="value num">${jpNum(subs)}</div>
+        <div class="raw num">${comma(subs)} 人</div>${deltaTag(history,"subs")}</div>
+      <div class="card kpi views"><div class="accent"></div>
+        <div class="label">総再生回数</div><div class="value num">${jpNum(views)}</div>
+        <div class="raw num">${comma(views)} 回</div>${deltaTag(history,"views")}</div>
+      <div class="card kpi videos"><div class="accent"></div>
+        <div class="label">投稿動画数</div><div class="value num">${comma(vcount)}</div>
+        <div class="raw">本</div>${deltaTag(history,"videos")}</div>
+    </div>
+    ${monetCard(subs,subsGoal,hours,hoursGoal)}
+    <div class="card chart-card">
+      <div class="chart-head"><span class="bar"></span>
+        <h2>${chartLabel(chartMetric)}の推移</h2>
+        <span class="days">（${history.length}日分の記録）</span>
+        ${chartDeltaTag(history,chartMetric)}
+        <div class="toggle">
+          <button class="${chartMetric==='subs'?'on':''}" onclick="__m('subs')">登録者</button>
+          <button class="${chartMetric==='hours'?'on':''}" onclick="__m('hours')">再生時間</button>
+          <button class="${chartMetric==='views'?'on':''}" onclick="__m('views')">再生回数</button>
+        </div>
+      </div>
+      ${chart(history,chartMetric)}
+    </div>
+    <div class="card recent-agg">
+      <div class="agg-row"><span class="k">直近${(latest.recentVideos||[]).length}本の再生回数</span><span class="v num">${jpNum(rViews)}</span></div>
+      <div class="agg-row"><span class="k">直近の高評価</span><span class="v red num">${jpNum(rLikes)}</span></div>
+      <div class="agg-row"><span class="k">直近のコメント</span><span class="v num">${jpNum(rComments)}</span></div>
+    </div>
+    <div class="section-h"><span class="bar"></span><h2>最新の動画</h2></div>
+    <div class="videos">${(latest.recentVideos||[]).map(videoCard).join("") || `<div class="loading">動画がありません。</div>`}</div>`;
+}
+
+function monetCard(subs,subsGoal,hours,hoursGoal){
+  const sp=Math.min(100,subsGoal>0?subs/subsGoal*100:0), hp=Math.min(100,hoursGoal>0?hours/hoursGoal*100:0);
+  const done=subs>=subsGoal && hours>=hoursGoal;
+  return `<div class="card monet">
+    <div class="monet-head"><span class="bar"></span><h2>収益化まで</h2>
+      <span class="monet-sub">登録者 ${comma(subsGoal)}人 ・ 総再生時間 ${comma(hoursGoal)}時間</span>
+      ${done?'<span class="monet-done">条件達成 🎉</span>':''}</div>
+    <div class="monet-grid">
+      <div class="gauge">${ring(sp)}<div class="gauge-info"><div class="glabel">チャンネル登録者</div>
+        <div class="gv num">${comma(subs)} <span>/ ${comma(subsGoal)}人</span></div>
+        <div class="gr">あと <b class="num">${comma(Math.max(0,subsGoal-subs))}</b> 人</div></div></div>
+      <div class="gauge">${ring(hp)}<div class="gauge-info"><div class="glabel">総再生時間</div>
+        <div class="gv num">${comma(hours)} <span>/ ${comma(hoursGoal)}時間</span></div>
+        <div class="gr">あと <b class="num">${comma(Math.max(0,hoursGoal-hours))}</b> 時間</div></div></div>
+    </div></div>`;
+}
+function videoCard(v){
+  const date=v.publishedAt?new Date(v.publishedAt).toLocaleDateString("ja-JP"):"";
+  return `<div class="card vid"><div class="thumb"><img loading="lazy" src="${v.thumb}" alt=""></div>
+    <div class="title">${escapeHtml(v.title||"")}</div><div class="date num">${date}</div>
+    <div class="stats">
+      <div class="stat"><span class="n num">${jpNum(v.views||0)}</span><span class="t">再生</span></div>
+      <div class="stat"><span class="n red num">${jpNum(v.likes||0)}</span><span class="t">高評価</span></div>
+      <div class="stat"><span class="n num">${jpNum(v.comments||0)}</span><span class="t">コメント</span></div>
+    </div></div>`;
+}
+function chartLabel(m){ return m==="subs"?"登録者数":m==="hours"?"総再生時間":"総再生回数"; }
+function chartUnit(m){ return m==="hours"?"時間":""; }
+function chart(history,metric){
+  const data=history.slice(-30).filter(d=>d[metric]!=null);
+  if(data.length<2) return `<div class="chart-empty">推移グラフは <b>2日分</b> たまると表示されます。（現在 ${data.length} 日分）<br>自動更新が毎日走るので、数日待てば線が伸びていきます。</div>`;
+  const W=820,H=260,padL=64,padR=22,padT=18,padB=34,iW=W-padL-padR,iH=H-padT-padB;
+  const vals=data.map(d=>d[metric]); let lo=Math.min(...vals),hi=Math.max(...vals);
+  if(lo===hi){const p=Math.max(1,Math.round(hi*0.02));lo-=p;hi+=p;}
+  const X=i=>padL+iW*i/(data.length-1), Y=v=>padT+iH*(1-(v-lo)/(hi-lo));
+  const pts=data.map((d,i)=>[X(i),Y(d[metric])]);
+  const line=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
+  const area=`M${pts[0][0].toFixed(1)} ${(padT+iH).toFixed(1)} `+pts.map(p=>"L"+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ")+` L${pts[pts.length-1][0].toFixed(1)} ${(padT+iH).toFixed(1)} Z`;
+  const last=pts[pts.length-1]; let grid="";
+  for(let g=0;g<=2;g++){const yy=padT+iH*g/2,val=hi-(hi-lo)*g/2;
+    grid+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="rgba(255,255,255,.06)"/>`;
+    grid+=`<text x="${padL-10}" y="${yy+4}" text-anchor="end" fill="var(--text-dim)" font-size="12" font-family="var(--font)">${jpNum(Math.round(val))}</text>`;}
+  return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+    <defs><linearGradient id="cl" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--cyan)" stop-opacity=".30"/><stop offset="100%" stop-color="var(--teal)" stop-opacity="0"/></linearGradient>
+    <linearGradient id="ls" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--cyan)"/><stop offset="100%" stop-color="var(--teal)"/></linearGradient></defs>
+    ${grid}<path d="${area}" fill="url(#cl)"/><path d="${line}" fill="none" stroke="url(#ls)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="5" fill="var(--teal)" stroke="#04121A" stroke-width="2"/>
+    <text x="${padL}" y="${H-10}" fill="var(--text-dim)" font-size="12" font-family="var(--font)">${md(data[0].date)}</text>
+    <text x="${W-padR}" y="${H-10}" text-anchor="end" fill="var(--text-dim)" font-size="12" font-family="var(--font)">${md(data[data.length-1].date)}</text></svg>`;
+}
+function ring(pct){
+  const r=58,c=2*Math.PI*r,off=c*(1-pct/100);
+  return `<svg width="148" height="148" viewBox="0 0 148 148" style="flex:none">
+    <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--cyan)"/><stop offset="100%" stop-color="var(--teal)"/></linearGradient></defs>
+    <circle cx="74" cy="74" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12"/>
+    <circle cx="74" cy="74" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 74 74)"/>
+    <text x="74" y="80" text-anchor="middle" fill="var(--text)" font-size="30" font-weight="700" font-family="var(--font)">${Math.round(pct)}%</text></svg>`;
+}
+window.__m=function(m){ chartMetric=m; if(lastData) render(lastData.latest,lastData.history); };
+function deltaOf(h,k){ return h.length<2?null:(h[h.length-1][k]||0)-(h[h.length-2][k]||0); }
+function deltaTag(h,k){ const d=deltaOf(h,k);
+  if(d===null) return `<div class="delta flat">前日比 —</div>`;
+  if(d>0) return `<div class="delta up">▲ +${comma(d)} <span class="lbl">前日比</span></div>`;
+  if(d<0) return `<div class="delta down">▼ ${comma(d)} <span class="lbl">前日比</span></div>`;
+  return `<div class="delta flat">±0 <span class="lbl">前日比</span></div>`; }
+function chartDeltaTag(h,k){ const d=deltaOf(h,k); if(d===null) return "";
+  const cls=d>0?"up":d<0?"down":"flat",s=d>0?"▲ +":d<0?"▼ ":"±";
+  return `<span class="cdelta delta ${cls}">${s}${comma(Math.abs(d))}${chartUnit(k)}</span>`; }
+function jpNum(n){ n=Number(n)||0;
+  if(n>=1e8) return (n/1e8).toFixed(n>=1e9?0:2).replace(/\.?0+$/,"")+"億";
+  if(n>=1e4) return (n/1e4).toFixed(n>=1e6?0:1).replace(/\.?0+$/,"")+"万"; return comma(n); }
+function comma(n){ return (Number(n)||0).toLocaleString("ja-JP"); }
+function md(s){ const p=String(s).split("-"); return Number(p[1])+"/"+Number(p[2]); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+load();
+setInterval(load, REFRESH_MS);
+</script>
+</body>
+</html>
