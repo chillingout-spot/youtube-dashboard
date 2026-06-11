@@ -45,23 +45,12 @@
     border:1px solid var(--glass-border);border-radius:var(--radius);box-shadow:0 22px 60px rgba(0,0,0,.32)}
 
   .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:30px}
-  .kpi-strip .mini{padding:18px 20px}
-  .kpi-strip .mini .label{font-size:12.5px;color:var(--text-dim);font-weight:600;letter-spacing:.02em;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .kpi-strip .mini .value{font-size:clamp(18px,2.2vw,26px);font-weight:700;letter-spacing:-.02em;margin-top:8px;line-height:1.1}
+  .kpi-strip .mini{padding:20px 22px;min-height:112px;display:flex;flex-direction:column;justify-content:space-between}
+  .kpi-strip .mini .label{font-size:12.5px;color:var(--text-dim);font-weight:600;letter-spacing:.02em;line-height:1.4}
+  .kpi-strip .mini .value{font-size:clamp(20px,2.4vw,30px);font-weight:700;letter-spacing:-.02em;margin-top:10px;line-height:1.1}
   @media(max-width:980px){.kpi-strip{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:480px){.kpi-strip{grid-template-columns:1fr}}
 
-  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:18px}
-  .kpi{padding:26px 30px;position:relative;overflow:hidden}
-  .kpi .label{font-size:14px;color:var(--text-dim);font-weight:600;letter-spacing:.02em}
-  .kpi .value{font-size:clamp(34px,4.2vw,52px);font-weight:700;letter-spacing:-.03em;margin-top:12px;line-height:1}
-  .kpi .raw{font-size:13px;color:var(--text-dim);margin-top:9px}
-  .kpi .delta{font-size:13px;font-weight:700;margin-top:9px}
-  .kpi .accent{position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;filter:blur(8px);opacity:.5}
-  .kpi.subs .accent{background:radial-gradient(circle,var(--cyan),transparent 70%)}
-  .kpi.views .accent{background:radial-gradient(circle,var(--blue),transparent 70%)}
-  .kpi.videos .accent{background:radial-gradient(circle,var(--green),transparent 70%)}
   .delta.up{color:var(--teal)} .delta.down{color:var(--yt-red)} .delta.flat{color:var(--text-dim)}
   .delta .lbl{opacity:.6;font-weight:600}
 
@@ -94,22 +83,19 @@
   .chart-svg{width:100%;height:auto;display:block;margin-top:6px}
   .chart-empty{padding:46px 0;text-align:center;color:var(--text-dim);font-size:14px;line-height:1.7}
 
-  .recent-agg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:24px 34px;margin-top:22px}
-  .agg-row{display:flex;flex-direction:column;gap:8px}
-  .agg-row .k{font-size:13px;color:var(--text-dim);font-weight:600}
-  .agg-row .v{font-size:27px;font-weight:700;letter-spacing:-.02em}
-  .agg-row .v.red{color:var(--yt-red)}
-  @media(max-width:760px){.recent-agg{grid-template-columns:1fr;gap:16px}}
-
-  .rank-card{padding:10px 24px 24px;margin-top:22px;overflow-x:auto}
-  .rank-table{width:100%;border-collapse:collapse}
-  .rank-table th,.rank-table td{padding:12px 10px;text-align:left;border-bottom:1px solid var(--glass-border);font-size:14px;white-space:nowrap}
+  .rank-card{padding:10px 16px 24px;margin-top:22px;overflow-x:auto}
+  .rank-table{width:100%;border-collapse:collapse;table-layout:fixed}
+  .rank-table th,.rank-table td{padding:12px 10px;text-align:left;border-bottom:1px solid var(--glass-border);font-size:14px;vertical-align:middle}
   .rank-table th{color:var(--text-dim);font-weight:600;font-size:12.5px}
   .rank-table tbody tr:last-child td{border-bottom:none}
-  .rank-table .rank{font-weight:700;color:var(--text-dim);width:36px}
+  .rank-table .col-rank{width:48px}
+  .rank-table .col-thumb{width:104px}
+  .rank-table .col-views{width:110px}
+  .rank-table .rank{font-weight:700;color:var(--text-dim)}
   .rank-table .thumb-cell img{width:84px;height:47px;object-fit:cover;border-radius:8px;display:block;background:rgba(255,255,255,.05)}
-  .rank-table .title-cell{white-space:normal;max-width:0;width:100%;font-weight:600;line-height:1.4}
+  .rank-table .title-cell{font-weight:600;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .rank-table .views-cell{font-weight:700;text-align:right}
+  @media(max-width:600px){.rank-table .col-thumb{width:72px}.rank-table .thumb-cell img{width:56px;height:32px}}
 
   .section-h{display:flex;align-items:center;gap:10px;margin:34px 2px 16px}
   .section-h .bar{width:4px;height:20px;border-radius:3px;background:var(--yt-red)}
@@ -126,7 +112,7 @@
   .vid .stat .n{font-size:16px;font-weight:700} .vid .stat .n.red{color:var(--yt-red)}
   .vid .stat .t{font-size:11px;color:var(--text-dim)}
   .loading{text-align:center;color:var(--text-dim);padding:90px 0;font-size:15px;line-height:1.8}
-  @media(max-width:760px){#dash{padding:22px 18px 36px}.kpis{grid-template-columns:1fr;gap:16px}}
+  @media(max-width:760px){#dash{padding:22px 18px 36px}}
   @media(prefers-reduced-motion:reduce){.dot{animation:none}*{transition:none!important}}
 </style>
 </head>
@@ -178,8 +164,8 @@ function render(latest, history){
   const subs=latest.subs, views=latest.views, vcount=latest.videos, hours=latest.hours;
   const subsGoal=latest.subsGoal||1000, hoursGoal=latest.hoursGoal||4000;
 
-  let rViews=0,rLikes=0,rComments=0;
-  (latest.recentVideos||[]).forEach(v=>{ rViews+=v.views||0; rLikes+=v.likes||0; rComments+=v.comments||0; });
+  let rLikes=0,rComments=0;
+  (latest.recentVideos||[]).forEach(v=>{ rLikes+=v.likes||0; rComments+=v.comments||0; });
 
   document.getElementById("content").innerHTML = `
     <div class="kpi-strip">
@@ -188,17 +174,6 @@ function render(latest, history){
       <div class="card mini"><div class="label">高評価合算（直近動画）</div><div class="value num">${jpNum(rLikes)}</div></div>
       <div class="card mini"><div class="label">コメント合算（直近動画）</div><div class="value num">${jpNum(rComments)}</div></div>
       <div class="card mini"><div class="label">投稿本数</div><div class="value num">${comma(vcount)}</div></div>
-    </div>
-    <div class="kpis">
-      <div class="card kpi subs"><div class="accent"></div>
-        <div class="label">チャンネル登録者数</div><div class="value num">${jpNum(subs)}</div>
-        <div class="raw num">${comma(subs)} 人</div>${deltaTag(history,"subs")}</div>
-      <div class="card kpi views"><div class="accent"></div>
-        <div class="label">総再生回数</div><div class="value num">${jpNum(views)}</div>
-        <div class="raw num">${comma(views)} 回</div>${deltaTag(history,"views")}</div>
-      <div class="card kpi videos"><div class="accent"></div>
-        <div class="label">投稿動画数</div><div class="value num">${comma(vcount)}</div>
-        <div class="raw">本</div>${deltaTag(history,"videos")}</div>
     </div>
     ${monetCard(subs,subsGoal,hours,hoursGoal)}
     <div class="card chart-card">
@@ -213,11 +188,6 @@ function render(latest, history){
         </div>
       </div>
       ${chart(history,chartMetric)}
-    </div>
-    <div class="card recent-agg">
-      <div class="agg-row"><span class="k">直近${(latest.recentVideos||[]).length}本の再生回数</span><span class="v num">${jpNum(rViews)}</span></div>
-      <div class="agg-row"><span class="k">直近の高評価</span><span class="v red num">${jpNum(rLikes)}</span></div>
-      <div class="agg-row"><span class="k">直近のコメント</span><span class="v num">${jpNum(rComments)}</span></div>
     </div>
     <div class="section-h"><span class="bar"></span><h2>直近の視聴数ランキング</h2></div>
     ${rankingTable(latest.recentVideos||[])}
@@ -251,6 +221,7 @@ function rankingTable(videos){
       <td class="views-cell num">${jpNum(v.views||0)}</td>
     </tr>`).join("");
   return `<div class="card rank-card"><table class="rank-table">
+    <colgroup><col class="col-rank"><col class="col-thumb"><col><col class="col-views"></colgroup>
     <thead><tr><th>順位</th><th>サムネ</th><th>タイトル</th><th style="text-align:right">視聴回数</th></tr></thead>
     <tbody>${rows}</tbody></table></div>`;
 }
@@ -298,11 +269,6 @@ function ring(pct){
 }
 window.__m=function(m){ chartMetric=m; if(lastData) render(lastData.latest,lastData.history); };
 function deltaOf(h,k){ return h.length<2?null:(h[h.length-1][k]||0)-(h[h.length-2][k]||0); }
-function deltaTag(h,k){ const d=deltaOf(h,k);
-  if(d===null) return `<div class="delta flat">前日比 —</div>`;
-  if(d>0) return `<div class="delta up">▲ +${comma(d)} <span class="lbl">前日比</span></div>`;
-  if(d<0) return `<div class="delta down">▼ ${comma(d)} <span class="lbl">前日比</span></div>`;
-  return `<div class="delta flat">±0 <span class="lbl">前日比</span></div>`; }
 function chartDeltaTag(h,k){ const d=deltaOf(h,k); if(d===null) return "";
   const cls=d>0?"up":d<0?"down":"flat",s=d>0?"▲ +":d<0?"▼ ":"±";
   return `<span class="cdelta delta ${cls}">${s}${comma(Math.abs(d))}${chartUnit(k)}</span>`; }
