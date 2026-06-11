@@ -28,92 +28,99 @@
     filter:saturate(120%)}
   .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
 
-  #dash{position:relative;z-index:1;min-height:100%;padding:34px 40px 44px}
-  .topbar{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-  .avatar{width:74px;height:74px;border-radius:50%;object-fit:cover;flex:none;
+  #dash{position:relative;z-index:1;min-height:100%;padding:22px 28px 32px;max-width:1760px;margin:0 auto}
+  .topbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;flex:none;
     border:2px solid var(--glass-border);background:rgba(255,255,255,.05)}
-  .ch-name{font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
-  .ch-handle{color:var(--text-dim);font-size:15px;margin-top:5px}
-  .live{margin-left:auto;display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:flex-end}
-  .live-dot{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--text-dim);font-weight:600;letter-spacing:.04em}
-  .dot{width:9px;height:9px;border-radius:50%;background:var(--teal);
+  .ch-name{font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+  .ch-handle{color:var(--text-dim);font-size:13px;margin-top:3px}
+  .live{margin-left:auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:flex-end}
+  .live-dot{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-dim);font-weight:600;letter-spacing:.04em}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);
     box-shadow:0 0 0 0 rgba(45,212,191,.6);animation:pulse 2.4s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(45,212,191,.55)}70%{box-shadow:0 0 0 11px rgba(45,212,191,0)}100%{box-shadow:0 0 0 0 rgba(45,212,191,0)}}
-  .updated{font-size:13px;color:var(--text-dim)}
+  .updated{font-size:12px;color:var(--text-dim)}
 
   .card{background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur)) saturate(155%);
     -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(155%);
-    border:1px solid var(--glass-border);border-radius:var(--radius);box-shadow:0 22px 60px rgba(0,0,0,.32)}
+    border:1px solid var(--glass-border);border-radius:18px;box-shadow:0 22px 60px rgba(0,0,0,.32)}
 
-  .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:30px}
-  .kpi-strip .mini{padding:20px 22px;min-height:112px;display:flex;flex-direction:column;justify-content:space-between}
-  .kpi-strip .mini .label{font-size:12.5px;color:var(--text-dim);font-weight:600;letter-spacing:.02em;line-height:1.4}
-  .kpi-strip .mini .value{font-size:clamp(20px,2.4vw,30px);font-weight:700;letter-spacing:-.02em;margin-top:10px;line-height:1.1}
+  .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}
+  .kpi-strip .mini{padding:14px 18px;min-height:84px;display:flex;flex-direction:column;justify-content:space-between}
+  .kpi-strip .mini .label{font-size:11.5px;color:var(--text-dim);font-weight:600;letter-spacing:.02em;line-height:1.4}
+  .kpi-strip .mini .value{font-size:clamp(18px,1.8vw,24px);font-weight:700;letter-spacing:-.02em;margin-top:6px;line-height:1.1}
   @media(max-width:980px){.kpi-strip{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:480px){.kpi-strip{grid-template-columns:1fr}}
 
   .delta.up{color:var(--teal)} .delta.down{color:var(--yt-red)} .delta.flat{color:var(--text-dim)}
   .delta .lbl{opacity:.6;font-weight:600}
 
-  .monet{padding:26px 34px;margin-top:22px}
-  .monet-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
-  .monet-head .bar{width:4px;height:22px;border-radius:3px;background:linear-gradient(var(--cyan),var(--teal))}
-  .monet-head h2{font-size:20px;font-weight:600;letter-spacing:-.01em}
-  .monet-head .monet-sub{font-size:13px;color:var(--text-dim)}
-  .monet-head .monet-done{margin-left:auto;font-size:15px;font-weight:700;color:var(--teal)}
-  .monet-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
-  @media(max-width:760px){.monet-grid{grid-template-columns:1fr;gap:26px}}
-  .gauge{display:flex;align-items:center;gap:24px}
-  .gauge-info .glabel{font-size:14px;color:var(--text-dim);font-weight:600}
-  .gauge-info .gv{font-size:27px;font-weight:700;letter-spacing:-.02em;margin-top:7px}
-  .gauge-info .gv span{font-size:15px;color:var(--text-dim);font-weight:600}
-  .gauge-info .gr{font-size:14px;color:var(--text-dim);margin-top:11px}
+  .monet{padding:18px 22px;margin-top:14px}
+  .monet-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .monet-head .bar{width:4px;height:18px;border-radius:3px;background:linear-gradient(var(--cyan),var(--teal))}
+  .monet-head h2{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .monet-head .monet-sub{font-size:12px;color:var(--text-dim)}
+  .monet-head .monet-done{margin-left:auto;font-size:13px;font-weight:700;color:var(--teal)}
+  .monet-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.monet-grid{grid-template-columns:1fr;gap:18px}}
+  .gauge{display:flex;align-items:center;gap:16px}
+  .gauge-info .glabel{font-size:12.5px;color:var(--text-dim);font-weight:600}
+  .gauge-info .gv{font-size:21px;font-weight:700;letter-spacing:-.02em;margin-top:5px}
+  .gauge-info .gv span{font-size:13px;color:var(--text-dim);font-weight:600}
+  .gauge-info .gr{font-size:12.5px;color:var(--text-dim);margin-top:7px}
   .gauge-info .gr b{color:var(--text);font-weight:700}
 
-  .chart-card{padding:24px 28px;margin-top:22px}
-  .chart-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-  .chart-head .bar{width:4px;height:20px;border-radius:3px;background:linear-gradient(var(--cyan),var(--teal))}
-  .chart-head h2{font-size:18px;font-weight:600;letter-spacing:-.01em}
-  .chart-head .days{font-size:13px;color:var(--text-dim)}
-  .chart-head .cdelta{font-size:14px;font-weight:700}
+  .chart-card{padding:16px 20px;margin-top:14px}
+  .chart-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .chart-head .bar{width:4px;height:18px;border-radius:3px;background:linear-gradient(var(--cyan),var(--teal))}
+  .chart-head h2{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .chart-head .days{font-size:12px;color:var(--text-dim)}
+  .chart-head .cdelta{font-size:13px;font-weight:700}
   .toggle{margin-left:auto;display:flex;gap:6px;background:rgba(255,255,255,.05);
-    border:1px solid var(--glass-border);border-radius:12px;padding:4px}
-  .toggle button{font-family:var(--font);font-size:13px;font-weight:600;color:var(--text-dim);
-    background:none;border:none;padding:7px 14px;border-radius:9px;cursor:pointer;transition:.2s}
+    border:1px solid var(--glass-border);border-radius:11px;padding:3px}
+  .toggle button{font-family:var(--font);font-size:12px;font-weight:600;color:var(--text-dim);
+    background:none;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;transition:.2s}
   .toggle button.on{background:linear-gradient(135deg,var(--cyan),var(--teal));color:#04121A}
-  .chart-svg{width:100%;height:auto;display:block;margin-top:6px}
-  .chart-empty{padding:46px 0;text-align:center;color:var(--text-dim);font-size:14px;line-height:1.7}
+  .chart-svg{width:100%;height:auto;display:block;margin-top:4px;max-height:200px}
+  .chart-empty{padding:32px 0;text-align:center;color:var(--text-dim);font-size:13px;line-height:1.7}
 
-  .rank-card{padding:10px 16px 24px;margin-top:22px;overflow-x:auto}
+  .rank-card{padding:8px 14px 16px;margin-top:14px;overflow-x:auto}
   .rank-table{width:100%;border-collapse:collapse;table-layout:fixed}
-  .rank-table th,.rank-table td{padding:12px 10px;text-align:left;border-bottom:1px solid var(--glass-border);font-size:14px;vertical-align:middle}
-  .rank-table th{color:var(--text-dim);font-weight:600;font-size:12.5px}
+  .rank-table th,.rank-table td{padding:9px 8px;text-align:left;border-bottom:1px solid var(--glass-border);font-size:13px;vertical-align:middle}
+  .rank-table th{color:var(--text-dim);font-weight:600;font-size:11.5px}
   .rank-table tbody tr:last-child td{border-bottom:none}
-  .rank-table .col-rank{width:48px}
-  .rank-table .col-thumb{width:104px}
-  .rank-table .col-views{width:110px}
+  .rank-table .col-rank{width:40px}
+  .rank-table .col-thumb{width:84px}
+  .rank-table .col-views{width:100px}
   .rank-table .rank{font-weight:700;color:var(--text-dim)}
-  .rank-table .thumb-cell img{width:84px;height:47px;object-fit:cover;border-radius:8px;display:block;background:rgba(255,255,255,.05)}
+  .rank-table .thumb-cell img{width:68px;height:38px;object-fit:cover;border-radius:7px;display:block;background:rgba(255,255,255,.05)}
   .rank-table .title-cell{font-weight:600;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .rank-table .views-cell{font-weight:700;text-align:right}
-  @media(max-width:600px){.rank-table .col-thumb{width:72px}.rank-table .thumb-cell img{width:56px;height:32px}}
+  @media(max-width:600px){.rank-table .col-thumb{width:60px}.rank-table .thumb-cell img{width:48px;height:27px}}
 
-  .section-h{display:flex;align-items:center;gap:10px;margin:34px 2px 16px}
-  .section-h .bar{width:4px;height:20px;border-radius:3px;background:var(--yt-red)}
-  .section-h h2{font-size:18px;font-weight:600;letter-spacing:-.01em}
-  .videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
-  .vid{padding:14px;display:flex;flex-direction:column}
-  .vid .thumb{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.05)}
+  .section-h{display:flex;align-items:center;gap:10px;margin:22px 2px 12px}
+  .section-h .bar{width:4px;height:18px;border-radius:3px;background:var(--yt-red)}
+  .section-h h2{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+  .vid{padding:11px;display:flex;flex-direction:column}
+  .vid .thumb{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.05)}
   .vid .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-  .vid .title{font-size:14.5px;font-weight:600;line-height:1.4;margin-top:13px;
+  .vid .title{font-size:13px;font-weight:600;line-height:1.4;margin-top:10px;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .vid .date{font-size:12px;color:var(--text-dim);margin-top:7px}
-  .vid .stats{display:flex;gap:16px;margin-top:13px;padding-top:13px;border-top:1px solid var(--glass-border)}
-  .vid .stat{display:flex;flex-direction:column;gap:3px}
-  .vid .stat .n{font-size:16px;font-weight:700} .vid .stat .n.red{color:var(--yt-red)}
-  .vid .stat .t{font-size:11px;color:var(--text-dim)}
+  .vid .date{font-size:11px;color:var(--text-dim);margin-top:5px}
+  .vid .stats{display:flex;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid var(--glass-border)}
+  .vid .stat{display:flex;flex-direction:column;gap:2px}
+  .vid .stat .n{font-size:14px;font-weight:700} .vid .stat .n.red{color:var(--yt-red)}
+  .vid .stat .t{font-size:10.5px;color:var(--text-dim)}
   .loading{text-align:center;color:var(--text-dim);padding:90px 0;font-size:15px;line-height:1.8}
-  @media(max-width:760px){#dash{padding:22px 18px 36px}}
+
+  @media(min-width:1400px){
+    #content{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;align-items:start}
+    #content > .kpi-strip,#content > .section-h,#content > .rank-card,#content > .videos,#content > .loading{grid-column:1/-1}
+    #content > .monet{grid-column:1}
+    #content > .chart-card{grid-column:2}
+  }
+  @media(max-width:760px){#dash{padding:18px 14px 28px}}
   @media(prefers-reduced-motion:reduce){.dot{animation:none}*{transition:none!important}}
 </style>
 </head>
@@ -241,7 +248,7 @@ function chartUnit(m){ return m==="hours"?"時間":""; }
 function chart(history,metric){
   const data=history.slice(-30).filter(d=>d[metric]!=null);
   if(data.length<2) return `<div class="chart-empty">推移グラフは <b>2日分</b> たまると表示されます。（現在 ${data.length} 日分）<br>自動更新が毎日走るので、数日待てば線が伸びていきます。</div>`;
-  const W=820,H=260,padL=64,padR=22,padT=18,padB=34,iW=W-padL-padR,iH=H-padT-padB;
+  const W=820,H=190,padL=64,padR=22,padT=14,padB=30,iW=W-padL-padR,iH=H-padT-padB;
   const vals=data.map(d=>d[metric]); let lo=Math.min(...vals),hi=Math.max(...vals);
   if(lo===hi){const p=Math.max(1,Math.round(hi*0.02));lo-=p;hi+=p;}
   const X=i=>padL+iW*i/(data.length-1), Y=v=>padT+iH*(1-(v-lo)/(hi-lo));
@@ -261,12 +268,12 @@ function chart(history,metric){
     <text x="${W-padR}" y="${H-10}" text-anchor="end" fill="var(--text-dim)" font-size="12" font-family="var(--font)">${md(data[data.length-1].date)}</text></svg>`;
 }
 function ring(pct){
-  const r=58,c=2*Math.PI*r,off=c*(1-pct/100);
-  return `<svg width="148" height="148" viewBox="0 0 148 148" style="flex:none">
+  const r=46,c=2*Math.PI*r,off=c*(1-pct/100);
+  return `<svg width="112" height="112" viewBox="0 0 112 112" style="flex:none">
     <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--cyan)"/><stop offset="100%" stop-color="var(--teal)"/></linearGradient></defs>
-    <circle cx="74" cy="74" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12"/>
-    <circle cx="74" cy="74" r="${r}" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 74 74)"/>
-    <text x="74" y="80" text-anchor="middle" fill="var(--text)" font-size="30" font-weight="700" font-family="var(--font)">${Math.round(pct)}%</text></svg>`;
+    <circle cx="56" cy="56" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+    <circle cx="56" cy="56" r="${r}" fill="none" stroke="url(#rg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 56 56)"/>
+    <text x="56" y="61" text-anchor="middle" fill="var(--text)" font-size="23" font-weight="700" font-family="var(--font)">${Math.round(pct)}%</text></svg>`;
 }
 window.__m=function(m){ chartMetric=m; if(lastData) render(lastData.latest,lastData.history); };
 function deltaOf(h,k){ return h.length<2?null:(h[h.length-1][k]||0)-(h[h.length-2][k]||0); }
