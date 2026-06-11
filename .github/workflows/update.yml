@@ -2,9 +2,9 @@ name: Update YouTube stats
 
 on:
   schedule:
-    # 毎日 21:00 UTC（＝日本時間 翌朝6:00ごろ）に実行
+    # 1時間ごと（毎時0分）に実行
     # 時刻を変えたいときは下の数字を調整（分 時 日 月 曜日 / 時はUTC）
-    - cron: "0 21 * * *"
+    - cron: "0 * * * *"
   workflow_dispatch: {}   # GitHubの画面から手動でも実行できるボタン
 
 permissions:
