@@ -98,6 +98,13 @@
   .rank-table .views-cell{font-weight:700;text-align:right}
   @media(max-width:600px){.rank-table .col-thumb{width:60px}.rank-table .thumb-cell img{width:48px;height:27px}}
 
+  .memo-card{padding:18px 22px;margin-top:14px}
+  .memo-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .memo-head .bar{width:4px;height:18px;border-radius:3px;background:linear-gradient(var(--cyan),var(--teal))}
+  .memo-head h2{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .memo-head .memo-updated{margin-left:auto;font-size:12px;color:var(--text-dim)}
+  .memo-body{font-size:15px;line-height:1.9;color:var(--text);white-space:pre-wrap;letter-spacing:.01em}
+
   .section-h{display:flex;align-items:center;gap:10px;margin:22px 2px 12px}
   .section-h .bar{width:4px;height:18px;border-radius:3px;background:var(--yt-red)}
   .section-h h2{font-size:16px;font-weight:600;letter-spacing:-.01em}
@@ -199,6 +206,7 @@ function render(latest, history){
     </div>
     <div class="section-h"><span class="bar"></span><h2>直近の視聴数ランキング</h2></div>
     ${rankingTable(latest.recentVideos||[])}
+    ${memoCard()}
     <div class="section-h"><span class="bar"></span><h2>最新の動画</h2></div>
     <div class="videos">${(latest.recentVideos||[]).map(videoCard).join("") || `<div class="loading">動画がありません。</div>`}</div>`;
 }
@@ -232,6 +240,13 @@ function rankingTable(videos){
     <colgroup><col class="col-rank"><col class="col-thumb"><col><col class="col-views"></colgroup>
     <thead><tr><th>順位</th><th>サムネ</th><th>タイトル</th><th style="text-align:right">視聴回数</th></tr></thead>
     <tbody>${rows}</tbody></table></div>`;
+}
+function memoCard(){
+  return `<div class="card memo-card">
+    <div class="memo-head"><span class="bar"></span><h2>📝 伸びている動画の分析メモ</h2>
+      <span class="memo-updated">最終更新: -</span></div>
+    <div class="memo-body">（ここに分析を記入）</div>
+  </div>`;
 }
 function videoCard(v){
   const date=v.publishedAt?new Date(v.publishedAt).toLocaleDateString("ja-JP"):"";
