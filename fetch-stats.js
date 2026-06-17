@@ -72,6 +72,7 @@ function jstDate(offsetDays = 0) {
       token
     );
     recentVideos = vids.items.map((v) => ({
+      id: v.id,
       title: v.snippet.title,
       publishedAt: v.snippet.publishedAt,
       thumb: (v.snippet.thumbnails.medium || v.snippet.thumbnails.default || {}).url || "",

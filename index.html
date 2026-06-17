@@ -96,6 +96,8 @@
   .rank-table .thumb-cell img{width:68px;height:38px;object-fit:cover;border-radius:7px;display:block;background:rgba(255,255,255,.05)}
   .rank-table .title-cell{font-weight:600;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .rank-table .views-cell{font-weight:700;text-align:right}
+  .rank-table a.vlink{display:block;color:inherit;text-decoration:none}
+  .rank-table a.vlink:hover{color:var(--teal)}
   @media(max-width:600px){.rank-table .col-thumb{width:60px}.rank-table .thumb-cell img{width:48px;height:27px}}
 
   .memo-card{padding:18px 22px;margin-top:14px}
@@ -110,10 +112,11 @@
   .section-h h2{font-size:16px;font-weight:600;letter-spacing:-.01em}
   .videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
   .vid{padding:11px;display:flex;flex-direction:column}
-  .vid .thumb{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.05)}
+  .vid .thumb{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.05);display:block}
   .vid .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-  .vid .title{font-size:13px;font-weight:600;line-height:1.4;margin-top:10px;
+  .vid .title{font-size:13px;font-weight:600;line-height:1.4;margin-top:10px;color:inherit;text-decoration:none;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .vid a.title:hover,.vid a.thumb:hover{opacity:.85}
   .vid .date{font-size:11px;color:var(--text-dim);margin-top:5px}
   .vid .stats{display:flex;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid var(--glass-border)}
   .vid .stat{display:flex;flex-direction:column;gap:2px}
@@ -227,15 +230,21 @@ function monetCard(subs,subsGoal,hours,hoursGoal){
         <div class="gr">あと <b class="num">${comma(Math.max(0,hoursGoal-hours))}</b> 時間</div></div></div>
     </div></div>`;
 }
+function videoUrl(v){
+  const id = v.id || (/\/vi\/([^/]+)\//.exec(v.thumb||"")||[])[1];
+  return id ? "https://www.youtube.com/watch?v=" + id : null;
+}
 function rankingTable(videos){
   if(!videos.length) return `<div class="card rank-card"><div class="loading">動画がありません。</div></div>`;
-  const rows = videos.slice().sort((a,b)=>(b.views||0)-(a.views||0)).map((v,i)=>`
+  const rows = videos.slice().sort((a,b)=>(b.views||0)-(a.views||0)).map((v,i)=>{
+    const url=videoUrl(v), a1=url?`<a class="vlink" href="${url}" target="_blank" rel="noopener">`:"", a2=url?"</a>":"";
+    return `
     <tr>
       <td class="rank num">${i+1}</td>
-      <td class="thumb-cell"><img loading="lazy" src="${v.thumb}" alt=""></td>
-      <td class="title-cell">${escapeHtml(v.title||"")}</td>
+      <td class="thumb-cell">${a1}<img loading="lazy" src="${v.thumb}" alt="">${a2}</td>
+      <td class="title-cell">${a1}${escapeHtml(v.title||"")}${a2}</td>
       <td class="views-cell num">${jpNum(v.views||0)}</td>
-    </tr>`).join("");
+    </tr>`;}).join("");
   return `<div class="card rank-card"><table class="rank-table">
     <colgroup><col class="col-rank"><col class="col-thumb"><col><col class="col-views"></colgroup>
     <thead><tr><th>順位</th><th>サムネ</th><th>タイトル</th><th style="text-align:right">視聴回数</th></tr></thead>
@@ -261,8 +270,9 @@ function memoCard(){
 }
 function videoCard(v){
   const date=v.publishedAt?new Date(v.publishedAt).toLocaleDateString("ja-JP"):"";
-  return `<div class="card vid"><div class="thumb"><img loading="lazy" src="${v.thumb}" alt=""></div>
-    <div class="title">${escapeHtml(v.title||"")}</div><div class="date num">${date}</div>
+  const url=videoUrl(v), tag=url?"a":"div", link=url?`href="${url}" target="_blank" rel="noopener"`:"";
+  return `<div class="card vid"><${tag} class="thumb" ${link}><img loading="lazy" src="${v.thumb}" alt=""></${tag}>
+    <${tag} class="title" ${link}>${escapeHtml(v.title||"")}</${tag}><div class="date num">${date}</div>
     <div class="stats">
       <div class="stat"><span class="n num">${jpNum(v.views||0)}</span><span class="t">再生</span></div>
       <div class="stat"><span class="n red num">${jpNum(v.likes||0)}</span><span class="t">高評価</span></div>
