@@ -6,10 +6,10 @@
 <title>YouTube Live Dashboard</title>
 <style>
   :root{
-    --bg-base:#03100D;
-    --cyan:#22D3EE; --teal:#2DD4BF;
-    --yt-red:#FF0033; --text:#F2F7F5; --text-dim:#8FA39C;
-    --glass-bg:rgba(180,255,230,0.045); --glass-border:rgba(170,255,235,0.10);
+    --bg-base:#021711;
+    --cyan:#29C9DD; --teal:#22C39E;
+    --yt-red:#FF0033; --text:#F3F8F6; --text-dim:#A3BFB7;
+    --glass-bg:rgba(180,255,230,0.065); --glass-border:rgba(170,255,235,0.14);
     --glass-blur:24px; --radius:26px;
     --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",
            "Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
@@ -17,15 +17,15 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{font-family:var(--font);color:var(--text);background:
-      linear-gradient(160deg, #02211A 0%, #03100D 45%, #020A09 100%) var(--bg-base);
+      linear-gradient(165deg, #052A20 0%, #041A14 40%, #020D0A 75%, #010806 100%) var(--bg-base);
     overflow-x:hidden;-webkit-font-smoothing:antialiased;letter-spacing:.01em}
   body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
     background:
-      radial-gradient(60% 55% at 18% 14%, rgba(45,212,191,.20), transparent 60%),
-      radial-gradient(55% 50% at 85% 22%, rgba(34,211,238,.14), transparent 62%),
-      radial-gradient(60% 60% at 80% 88%, rgba(16,185,129,.16), transparent 60%),
-      radial-gradient(55% 55% at 12% 90%, rgba(45,212,191,.13), transparent 62%);
-    filter:saturate(120%)}
+      radial-gradient(58% 52% at 16% 12%, rgba(34,195,158,.16), transparent 60%),
+      radial-gradient(52% 48% at 86% 20%, rgba(41,201,221,.10), transparent 62%),
+      radial-gradient(58% 58% at 82% 90%, rgba(34,195,158,.12), transparent 60%),
+      radial-gradient(52% 52% at 10% 92%, rgba(41,201,221,.08), transparent 62%);
+    filter:saturate(112%)}
   .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
 
   #dash{position:relative;z-index:1;min-height:100%;padding:22px 28px 32px;max-width:1760px;margin:0 auto}
